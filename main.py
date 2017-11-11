@@ -181,6 +181,7 @@ best_val_loss = None
 
 # At any point you can hit Ctrl + C to break out of training early.
 try:
+    begin_time = time.time()
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
         train()
@@ -202,6 +203,8 @@ except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
 
+end_time = time.time()
+
 # Load the best saved model.
 with open(args.save, 'rb') as f:
     model = torch.load(f)
@@ -209,6 +212,6 @@ with open(args.save, 'rb') as f:
 # Run on test data.
 test_loss = evaluate(test_data)
 print('=' * 89)
-print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
-    test_loss, math.exp(test_loss)))
+print('| End of training | Total time {:5.2f}  |  test loss {:5.2f} | test ppl {:8.2f}'.format(
+    end_time-begin_time, test_loss, math.exp(test_loss)))
 print('=' * 89)
